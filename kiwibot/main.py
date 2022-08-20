@@ -5,7 +5,7 @@ from discord.ext import commands
 bot = discord.Bot(debug_guilds=[1006631290012975218], intents=discord.Intents.all())
 extension = discord.SlashCommandGroup("extension", "Commands related to extensions.")
 
-# EVENTS #######b###########################
+# EVENTS ###################################
 
 @bot.event
 async def on_ready():
