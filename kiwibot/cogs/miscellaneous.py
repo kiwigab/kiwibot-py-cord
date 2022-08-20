@@ -1,4 +1,4 @@
-import discord, random, json, ipapi
+import discord, random, json, ipapi, requests
 
 from discord import Option
 from datetime import datetime
