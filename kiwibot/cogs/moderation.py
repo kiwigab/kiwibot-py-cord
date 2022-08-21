@@ -32,7 +32,7 @@ class Moderation(commands.Cog):
     )
     async def multiplerole(self, ctx, member: discord.Member, role: discord.Role, filter : str, type : str):
                        
-      embed = discord.Embed(title="Multiple Role", color=discord.Colour.red())  
+      embed = discord.Embed(title="Multiple Role", color=discord.Colour.blue())  
     
       if ctx.author.guild_permissions.manage_roles: 
         for member in ctx.guild.members:
@@ -76,7 +76,7 @@ class Moderation(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def removerole(self, ctx, member: discord.Member, role: discord.Role):
                        
-      embed = discord.Embed(title="Remove Role", color=discord.Colour.red(), description=f"❌Changed roles for {member.name}. Removed '{role.name}'!")  
+      embed = discord.Embed(title="Remove Role", color=discord.Colour.blue(), description=f"❌Changed roles for {member.name}. Removed '{role.name}'!")  
     
       if ctx.author.guild_permissions.manage_roles: 
         try:
@@ -102,7 +102,7 @@ class Moderation(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def giverole(self, ctx, member: discord.Member, role: discord.Role):
                        
-      embed = discord.Embed(title="Give Role", color=discord.Colour.red(), description=f"✅Changed roles for {member.name}. Added '{role.name}'!")  
+      embed = discord.Embed(title="Give Role", color=discord.Colour.blue(), description=f"✅Changed roles for {member.name}. Added '{role.name}'!")  
     
       if ctx.author.guild_permissions.manage_roles: 
         try:
@@ -129,7 +129,7 @@ class Moderation(commands.Cog):
     @commands.slash_command(name="unlock", description=f"{cmdsdescription['lock']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def unlock(self, ctx):
-      embed = discord.Embed(title="Unlock", color=discord.Colour.red(), description=f"{ctx.channel.mention} was unlocked. ✅")  
+      embed = discord.Embed(title="Unlock", color=discord.Colour.blue(), description=f"{ctx.channel.mention} was unlocked. ✅")  
     
       if ctx.author.guild_permissions.manage_channels: 
         try:
@@ -149,7 +149,7 @@ class Moderation(commands.Cog):
     @commands.slash_command(name="lock", description=f"{cmdsdescription['lock']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def lock(self, ctx):
-      embed = discord.Embed(title="Lock", color=discord.Colour.red(), description=f"{ctx.channel.mention} was locked. ❌")  
+      embed = discord.Embed(title="Lock", color=discord.Colour.blue(), description=f"{ctx.channel.mention} was locked. ❌")  
          
       if ctx.author.guild_permissions.manage_channels: 
         try:
@@ -169,7 +169,7 @@ class Moderation(commands.Cog):
     @commands.slash_command(name="softban", description=f"{cmdsdescription['softban']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def softban(self, ctx, member : discord.Member):
-      embed = discord.Embed(title="Softban", color=discord.Colour.red(), description=f"{member.display_name}#{member.discriminator} was softbanned..")  
+      embed = discord.Embed(title="Softban", color=discord.Colour.blue(), description=f"{member.display_name}#{member.discriminator} was softbanned..")  
       
       if ctx.author.guild_permissions.ban_members:         
           try:      
@@ -196,7 +196,7 @@ class Moderation(commands.Cog):
     @commands.slash_command(name="removetimeout", description=f"{cmdsdescription['removetimeout']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def removetimeout(self, ctx, member : discord.Member):
-      embed = discord.Embed(title="Timeout", color=discord.Colour.red(), description=f"Removed timeout for {member.display_name}")  
+      embed = discord.Embed(title="Timeout", color=discord.Colour.blue(), description=f"Removed timeout for {member.display_name}")  
     
       if ctx.author.guild_permissions.moderate_members:  
         try:
@@ -222,7 +222,7 @@ class Moderation(commands.Cog):
     @commands.slash_command(name="timeout", description=f"{cmdsdescription['timeout']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def timeout(self, ctx, member : discord.Member, time, reason = None):
-      embed = discord.Embed(title="Timeout", color=discord.Colour.red(), description=f"{member.display_name} has been timed out.")  
+      embed = discord.Embed(title="Timeout", color=discord.Colour.blue(), description=f"{member.display_name} has been timed out.")  
     
       if ctx.author.guild_permissions.moderate_members:  
         try:
@@ -248,7 +248,7 @@ class Moderation(commands.Cog):
     @commands.slash_command(name="setnick", description=f"{cmdsdescription['setnick']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def setnick(self, ctx, member : discord.Member, nick):
-      embed = discord.Embed(title="Setnick", color=discord.Colour.red(), description=f"{member.name}'s nickname was set to {nick}'")  
+      embed = discord.Embed(title="Setnick", color=discord.Colour.blue(), description=f"{member.name}'s nickname was set to {nick}'")  
       
       if ctx.author.guild_permissions.manage_nicknames:  
         try:
@@ -274,7 +274,7 @@ class Moderation(commands.Cog):
     @commands.slash_command(name="slowmode", description=f"{cmdsdescription['slowmode']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def slowmode(self, ctx, seconds: int):
-      embed = discord.Embed(title="Slowmode", color=discord.Colour.red(), description=f"Set the slowmode delay in this channel to {seconds} seconds!")  
+      embed = discord.Embed(title="Slowmode", color=discord.Colour.blue(), description=f"Set the slowmode delay in this channel to {seconds} seconds!")  
       
       if ctx.author.guild_permissions.manage_channels:  
         try:
@@ -298,7 +298,7 @@ class Moderation(commands.Cog):
                     member:  Option(discord.Member, required = False)
                                     
                     ):
-      embed = discord.Embed(title="Clear", color=discord.Colour.red(), description=f"Cleared {amount} messages sent by {member.name}.." if member else f"Cleared {amount} messages..")  
+      embed = discord.Embed(title="Clear", color=discord.Colour.blue(), description=f"Cleared {amount} messages sent by {member.name}.." if member else f"Cleared {amount} messages..")  
       def check(m):
         return m.author.id == member.id
         
@@ -325,7 +325,7 @@ class Moderation(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def kick(self, ctx, member : discord.Member, reason = None):
       if ctx.author.guild_permissions.kick_members:         
-        embed = discord.Embed(title="Kick", color=discord.Colour.red(), description=f"{member.display_name}#{member.discriminator} was kicked!\nID: {member.id} \nReason: {reason}")  
+        embed = discord.Embed(title="Kick", color=discord.Colour.blue(), description=f"{member.display_name}#{member.discriminator} was kicked!\nID: {member.id} \nReason: {reason}")  
 
         try:
           if ctx.author.top_role > member.top_role:        
@@ -350,7 +350,7 @@ class Moderation(commands.Cog):
     @commands.slash_command(name="ban", description=f"{cmdsdescription['ban']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def ban(self, ctx, member : discord.Member, reason = None):
-        embed = discord.Embed(title="Ban", color=discord.Colour.red(), description=f"{member.display_name}#{member.discriminator} was banned..\nID: {member.id} \nReason: {reason}")  
+        embed = discord.Embed(title="Ban", color=discord.Colour.blue(), description=f"{member.display_name}#{member.discriminator} was banned..\nID: {member.id} \nReason: {reason}")  
         if ctx.author.guild_permissions.ban_members:     
  
           try:
@@ -377,7 +377,7 @@ class Moderation(commands.Cog):
     async def unban(self, ctx, user: discord.User):
         embed = discord.Embed(
           title="Unban",
-          color=discord.Colour.red(), 
+          color=discord.Colour.blue(), 
         )
       
         if ctx.author.guild_permissions.ban_members:     

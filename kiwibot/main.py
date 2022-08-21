@@ -13,7 +13,7 @@ async def on_ready():
   
 @bot.event
 async def on_application_command_error(ctx, error):
-  embed = discord.Embed(title="Error", description=error)
+  embed = discord.Embed(title="Error", description=error, color=discord.Colour.blue())
   await ctx.respond(embed=embed)     
   
 # EXTENSION COMMANDS ########################
@@ -45,4 +45,4 @@ for f in os.listdir("./kiwibot/cogs"):
     bot.load_extension("cogs." + f[:-3])
 
 bot.add_application_command(extension)
-bot.run('OTc5NDc4NzkxMDExMzM2MjYy.GBaePa.AriQi1VK2oIogQrNSCdAVlLZK2m2YB_IrRTcB8')
+bot.run('OTk4MjA1MzY5ODcwNDUwNzA4.GhRle9.Vvsn-W8HQgPXQn8g8ys1_06F1Am8_MdYFjT0mo')

@@ -36,7 +36,7 @@ class Nsfw(commands.Cog):
       
       embed = discord.Embed(
         title=f"pussy",
-        color = discord.Colour.red()
+        color = discord.Colour.blue()
       )  
       
       all_messages = []
@@ -67,7 +67,7 @@ class Nsfw(commands.Cog):
       
       embed = discord.Embed(
         title=f"boobs",
-        color = discord.Colour.red()
+        color = discord.Colour.blue()
       )  
       
       all_messages = []
@@ -98,7 +98,7 @@ class Nsfw(commands.Cog):
       
       embed = discord.Embed(
         title=f"ass",
-        color = discord.Colour.red()
+        color = discord.Colour.blue()
       )  
       
       all_messages = []
@@ -129,7 +129,7 @@ class Nsfw(commands.Cog):
       
       embed = discord.Embed(
         title=f"asian",
-        color = discord.Colour.red()
+        color = discord.Colour.blue()
       )  
       
       all_messages = []
@@ -160,7 +160,7 @@ class Nsfw(commands.Cog):
       
       embed = discord.Embed(
         title=f"blowjob",
-        color = discord.Colour.red()
+        color = discord.Colour.blue()
       )  
       
       all_messages = []
@@ -191,7 +191,7 @@ class Nsfw(commands.Cog):
       
       embed = discord.Embed(
         title=f"anal",
-        color = discord.Colour.red()
+        color = discord.Colour.blue()
       )  
       
       all_messages = []

@@ -148,7 +148,7 @@ class Events(commands.Cog):
     async def goodbyesetup(self, ctx, channel : Option(discord.TextChannel, required=True), message : Option(str, description="<guild>-name of the guild <member.mention>-mention the member <member.name>-name of the member", required=True)):
       embed = discord.Embed(
         title="Goodbye Setup",
-        color=discord.Colour.red()
+        color=discord.Colour.blue()
       )
       
       if ctx.author.guild_permissions.administrator: 
@@ -186,7 +186,7 @@ class Events(commands.Cog):
     async def welcomesetup(self, ctx, channel : Option(discord.TextChannel, required=True), type : str, message : Option(str, description="<guild.name>-name of the guild <member.mention>-mention the member <member.name>-name of the member", required=True)):
       embed = discord.Embed(
         title="Welcome Setup",
-        color=discord.Colour.red()
+        color=discord.Colour.blue()
       )
       if ctx.author.guild_permissions.administrator: 
       
@@ -197,7 +197,7 @@ class Events(commands.Cog):
         data = cursor.fetchone()
   
         if data:
-          cursor.execute("UPDATE welcome SET channelid = ?, type = ?, message = ? WHERE guildid = ?", (channel.id, type, message, keyword, ctx.guild.id,))
+          cursor.execute("UPDATE welcome SET channelid = ?, type = ?, message = ? WHERE guildid = ?", (channel.id, type, message, ctx.guild.id,))
           embed.description="Data succesfully updated!"
           
         else:
@@ -220,7 +220,7 @@ class Events(commands.Cog):
     async def defaultrolesetup(self, ctx, role : Option(discord.Role, required=True)):
       embed = discord.Embed(
         title="Default Role Setup",
-        color=discord.Colour.red()
+        color=discord.Colour.blue()
       )
       
       if ctx.author.guild_permissions.administrator: 

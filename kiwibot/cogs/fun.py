@@ -417,7 +417,10 @@ class Fun(commands.Cog):
         member = member or ctx.author
         rand = random.randint(0, 100)
 
-        embed = discord.Embed(title="epic gamer rate machine never lies",color=discord.Colour.red())
+        embed = discord.Embed(
+          title="epic gamer rate machine never lies",
+           color=discord.Colour.blue()
+        )
         
         if rand >= 30:
           embed.description = f"{member.display_name} este {rand}% gamer"
@@ -434,7 +437,10 @@ class Fun(commands.Cog):
         member = member or ctx.author
         rand = random.randint(0, 100)
 
-        embed = discord.Embed(title="thot rate machine never lies",color=discord.Colour.red())
+        embed = discord.Embed(
+          title="thot rate machine never lies",
+           color=discord.Colour.blue()
+        )
         
         if rand >= 30:
           embed.description = f"{member.display_name} este {rand}% thotty"
@@ -451,15 +457,16 @@ class Fun(commands.Cog):
         member = member or ctx.author
         rand = random.randint(0, 100)
 
-        embed = discord.Embed(title="gay rate machine never lies",color=discord.Colour.red())
+        embed = discord.Embed(
+          title="gay rate machine never lies",
+          color=discord.Colour.blue()          
+        )
         
         if rand >= 30:
           embed.description = f"{member.display_name} este {rand}% gay🏳️‍🌈"
-          embed.color = discord.Colour.magenta()
 
-        if rand < 30:
+        else:
           embed.description = f"{member.display_name} este {rand}% gay📏"
-          embed.color = discord.Colour.blue()  
           
         await ctx.respond(embed=embed) 
       
@@ -470,12 +477,15 @@ class Fun(commands.Cog):
         member = member or ctx.author
         rand = random.randint(1, 30)
 
-        embed = discord.Embed(title="simp rate machine never lies",color=discord.Colour.red())
+        embed = discord.Embed(
+          title="simp rate machine never lies",
+          color=discord.Colour.blue()
+        )
         
         if rand >= 30:
           embed.description = f"{member.display_name} este {rand}% simp.. Sunt dezamagit de el"
           
-        if rand < 30:
+        else:
           embed.description = f"{member.display_name} este {rand}% simp.. Foarte bine soldat"
 
         await ctx.respond(embed=embed) 
@@ -487,29 +497,35 @@ class Fun(commands.Cog):
         member = member or ctx.author
         rand = random.randint(1, 30)
 
-        embed = discord.Embed(title="stank rate machine never lies",color=discord.Colour.red())
+        embed = discord.Embed(
+          title="stank rate machine never lies",
+          color=discord.Colour.blue()
+        )
         
         if rand >= 30:
           embed.description = f"{member.display_name} este {rand}% stanky.. Spala-te bine la organul genital masculin de reproducere jegosule."
           
-        if rand < 30:
-          embed.description = f"{member.display_name} este {rand}% simp.. TE SPELI?"
+        else:
+          embed.description = f"{member.display_name} este {rand}% stanky.. TE SPELI?"
 
         await ctx.respond(embed=embed) 
       
     #TERMINAT
-    @rate.command(guild_ids=[937419314968019004], name="terminat", description=f"{cmdsdescription['terminatrate']}")
+    @rate.command(guild_ids=[1006631290012975218], name="terminat", description=f"{cmdsdescription['terminatrate']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def termiantrate(self, ctx, member: discord.Member = None):
         member = member or ctx.author
         rand = random.randint(0, 100)
 
-        embed = discord.Embed(title="termiant rate machine never lies",color=discord.Colour.red())
+        embed = discord.Embed(
+          title="termiant rate machine never lies",
+          color=discord.Colour.blue()
+        )
         
         if rand >= 30:
           embed.description = f"{member.display_name} este {rand}% terminat.. Sunt mandru de el"
 
-        if rand < 39:
+        else:
           embed.description = f"{member.display_name} este {rand}% terminat.. Un ratat"
           
         await ctx.respond(embed=embed) 
@@ -522,7 +538,7 @@ class Fun(commands.Cog):
     async def dadjoke(self, ctx):
         embed = discord.Embed(
           title="just a dad joke",
-          color = discord.Colour.red()
+          color = discord.Colour.blue()
         )
       
         page = requests.get("https://icanhazdadjoke.com/")
@@ -539,7 +555,7 @@ class Fun(commands.Cog):
     async def stapinescu(self, ctx):
         embed = discord.Embed(
           title="cuvinte celebre spuse de stapinu",
-          color = discord.Colour.red()
+          color = discord.Colour.blue()
         )
       
         rand = random.randint(0, 153)
@@ -557,7 +573,10 @@ class Fun(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def roast(self, ctx, member : discord.Member = None):
         member = member or ctx.author
-        embed = discord.Embed(title="roast", color = discord.Colour.red())
+        embed = discord.Embed(
+          title="roast",
+          color = discord.Colour.blue()
+        )
       
         page = requests.get(f"https://insult.mattbas.org/api/insult.html?who={member.display_name}")
         soup = BeautifulSoup(page.text, 'html5lib')
@@ -571,7 +590,10 @@ class Fun(commands.Cog):
     @commands.slash_command(name="meme", description=f"{cmdsdescription['meme']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def meme(self, ctx):
-        embed = discord.Embed(title="meme", color = discord.Colour.red())
+        embed = discord.Embed(
+          title="meme",
+           color = discord.Colour.blue()
+          )
       
         req = requests.get("https://some-random-api.ml/meme")
         data = req.json()
@@ -584,17 +606,20 @@ class Fun(commands.Cog):
     @commands.slash_command(name="8ball", description=f"{cmdsdescription['8ball']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def _8ball(self, ctx, question):
-        embed = discord.Embed(title="8ball", color=discord.Colour.red())
+        embed = discord.Embed(
+          title="8ball",
+           color=discord.Colour.blue()
+          )
       
         list = [
-          'DA ESTI TERMINAT?',
-          'ESTI TERMINAT? N-AM DE UNDE SA STIU NU SUNT AKINATOR..',
-          'PROBABIL..', 
-          'SUNT TERMINAT SI NU STIU SIGUR',
-          'NU, TERMINATULE', 
-          'ESTI TERMINAT?', 
-          'AI DAT RELOAD?',
-          'INTREBAREA ASTA NU ARE NICIUN SENS TERMINATULE..',
+          'Yes! Are you retarded?',
+          'Are you retarded? I am not Akinator..',
+          'Probably', 
+          "I am retarded and I don't know..",
+          'NO, RETARD', 
+          'Are you retarded?', 
+          'Reload?',
+          "This question doesn't have any sense..",
         ]
       
         answer = random.choice(list)
@@ -607,8 +632,11 @@ class Fun(commands.Cog):
     @commands.slash_command(name="hack", description=f"{cmdsdescription['hack']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def hack(self, ctx, member : discord.Member):
-        ctx.defer()
         member = member or ctx.author
+
+        await ctx.respond("STARTING..", delete_after=2)
+        await asyncio.sleep(2)
+
         message = await ctx.send(f"HACKING {member.display_name}")
         await asyncio.sleep(2)
         await message.edit(content="Stealing password and email from discord..")
@@ -640,10 +668,15 @@ class Fun(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def pussy(self, ctx, member: discord.Member = None):
         member = member or ctx.author
-        list = ['{}', '[{}]', '()', '[]', '({})', '{]', '[}']
-        choice = random.choice(list)
+        
+        choice = random.choice(['{}', '[{}]', '()', '[]', '({})', '{]', '[}'])
       
-        embed = discord.Embed(title="pussy machine never lies", description=f"organul genital feminin de reproducere al lui {member.name} arata asa: \n{choice}", color=discord.Colour.red())
+        embed = discord.Embed(
+          title="pussy machine never lies",
+          description=f"organul genital feminin de reproducere al lui {member.name} arata asa: \n{choice}",
+          color=discord.Colour.blue()
+        )
+
         await ctx.respond(embed=embed) 
       
     #PENIS
@@ -657,7 +690,7 @@ class Fun(commands.Cog):
         embed = discord.Embed(
           title="penis machine never lies",
           description = f"{member.display_name}'s penis \n8{lenght}>",
-          color=discord.Colour.red()
+          color=discord.Colour.blue()
         )
       
         await ctx.respond(embed=embed) 

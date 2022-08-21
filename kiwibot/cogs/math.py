@@ -20,12 +20,12 @@ class Math(commands.Cog):
     #SQRT
     @math.command(name="sqrt", description=f"{cmdsdescription['sqrt']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def sqrt(self, ctx, numbers):
+    async def sqrt(self, ctx, number):
       sqrt = math.sqrt(int(number))
       
       embed = discord.Embed(
         title="Square Root",
-        color = discord.Colour.red(),
+        color = discord.Colour.blue(),
         description=f"sqrt({number}) = {sqrt}"
       )  
       
@@ -39,7 +39,7 @@ class Math(commands.Cog):
       
       embed = discord.Embed(
         title="Power",
-        color = discord.Colour.red(),
+        color = discord.Colour.blue(),
         description=f"{number}^{power} = {pow}"
       )  
       
@@ -53,7 +53,7 @@ class Math(commands.Cog):
       
       embed = discord.Embed(
         title="Sin",
-        color = discord.Colour.red(),
+        color = discord.Colour.blue(),
         description=f"sin({number}) = {sin}"
       )  
       
@@ -67,7 +67,7 @@ class Math(commands.Cog):
       
       embed = discord.Embed(
         title="Cos",
-        color = discord.Colour.red(),
+        color = discord.Colour.blue(),
         description=f"cos({number}) = {cos}"
       )  
       
@@ -80,7 +80,7 @@ class Math(commands.Cog):
     async def calculator(self, ctx, operation):
       embed = discord.Embed(
         title="Calculator",
-        color = discord.Colour.red(),
+        color = discord.Colour.blue(),
         description=f'{operation} = {eval(operation)}'
       )  
       
@@ -99,7 +99,7 @@ class Math(commands.Cog):
       
       embed = discord.Embed(
         title="Arithmetic Mean",
-        color = discord.Colour.red(),
+        color = discord.Colour.blue(),
         description=f'{operation} = {eval(operation)}'
       )  
       
@@ -118,7 +118,7 @@ class Math(commands.Cog):
       
       embed = discord.Embed(
         title="Geometric Mean",
-        color = discord.Colour.red(),
+        color = discord.Colour.blue(),
         description=f'sqrt({operation}) = {math.sqrt(result)}'
       )  
       

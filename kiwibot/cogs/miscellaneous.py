@@ -29,7 +29,7 @@ class Miscellaneous(commands.Cog):
     @animals.command(name="dog", description=f"{cmdsdescription['dog']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def dog(self, ctx):
-        embed = discord.Embed(title="dog", color = discord.Colour.red())
+        embed = discord.Embed(title="dog", color = discord.Colour.blue())
       
         req = requests.get("https://some-random-api.ml/img/dog")
         data = req.json()
@@ -42,7 +42,7 @@ class Miscellaneous(commands.Cog):
     @animals.command(name="cat", description=f"{cmdsdescription['cat']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def cat(self, ctx):
-        embed = discord.Embed(title="cat", color = discord.Colour.red())
+        embed = discord.Embed(title="cat", color = discord.Colour.blue())
       
         req = requests.get("https://some-random-api.ml/img/cat")
         data = req.json()
@@ -55,7 +55,7 @@ class Miscellaneous(commands.Cog):
     @animals.command(name="fox", description=f"{cmdsdescription['fox']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def fox(self, ctx):
-        embed = discord.Embed(title="fox", color = discord.Colour.red())
+        embed = discord.Embed(title="fox", color = discord.Colour.blue())
       
         req = requests.get("https://some-random-api.ml/img/fox")
         data = req.json()
@@ -68,7 +68,7 @@ class Miscellaneous(commands.Cog):
     @animals.command(name="panda", description=f"{cmdsdescription['panda']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def panda(self, ctx):
-        embed = discord.Embed(title="panda", color = discord.Colour.red())
+        embed = discord.Embed(title="panda", color = discord.Colour.blue())
       
         req = requests.get("https://some-random-api.ml/img/panda")
         data = req.json()
@@ -81,7 +81,7 @@ class Miscellaneous(commands.Cog):
     @animals.command(name="redpanda", description=f"{cmdsdescription['redpanda']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def redpanda(self, ctx):
-        embed = discord.Embed(title="redpanda", color = discord.Colour.red())
+        embed = discord.Embed(title="redpanda", color = discord.Colour.blue())
       
         req = requests.get("https://some-random-api.ml/img/redpanda")
         data = req.json()
@@ -94,7 +94,7 @@ class Miscellaneous(commands.Cog):
     @animals.command(name="koala", description=f"{cmdsdescription['koala']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def koala(self, ctx):
-        embed = discord.Embed(title="koala", color = discord.Colour.red())
+        embed = discord.Embed(title="koala", color = discord.Colour.blue())
       
         req = requests.get("https://some-random-api.ml/img/koala")
         data = req.json()
@@ -107,7 +107,7 @@ class Miscellaneous(commands.Cog):
     @animals.command(name="bird", description=f"{cmdsdescription['bird']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def bird(self, ctx):
-        embed = discord.Embed(title="koala", color = discord.Colour.red())
+        embed = discord.Embed(title="koala", color = discord.Colour.blue())
       
         req = requests.get("https://some-random-api.ml/img/bird")
         data = req.json()
@@ -120,7 +120,7 @@ class Miscellaneous(commands.Cog):
     @animals.command(name="raccoon", description=f"{cmdsdescription['raccoon']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def raccoon(self, ctx):
-        embed = discord.Embed(title="koala", color = discord.Colour.red())
+        embed = discord.Embed(title="koala", color = discord.Colour.blue())
       
         req = requests.get("https://some-random-api.ml/img/koala")
         data = req.json()
@@ -133,7 +133,7 @@ class Miscellaneous(commands.Cog):
     @animals.command(name="kangaroo", description=f"{cmdsdescription['kangaroo']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def kangaroo(self, ctx):
-        embed = discord.Embed(title="kangaroo", color = discord.Colour.red())
+        embed = discord.Embed(title="kangaroo", color = discord.Colour.blue())
       
         req = requests.get("https://some-random-api.ml/img/kangaroo")
         data = req.json()
@@ -151,7 +151,7 @@ class Miscellaneous(commands.Cog):
         embed = discord.Embed(
           title="GeoLocation",
           description=" ",
-          color = discord.Colour.red()
+          color = discord.Colour.blue()
         )
       
         data = ipapi.location(ip = ip, output='json')
@@ -244,7 +244,7 @@ class Miscellaneous(commands.Cog):
         embed = discord.Embed(
           title="Help",
           description=" ",
-          color = discord.Colour.red()
+          color = discord.Colour.blue()
         )
       
         embed.add_field(name="Creator", value="kiwigab#4827", inline=False)
@@ -260,7 +260,7 @@ class Miscellaneous(commands.Cog):
       word_list = message.split()
       embed = discord.Embed (
         title="Direct Message",
-        color=discord.Colour.red(),
+        color=discord.Colour.blue(),
         description=f"Message: {message}\nAuthor: {ctx.author.name}"
       )
       
@@ -287,7 +287,7 @@ class Miscellaneous(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def roll(self, ctx, number):
         rand = random.randint(0, int(number))     
-        embed = discord.Embed(title="roll the dice", color=discord.Colour.red())
+        embed = discord.Embed(title="roll the dice", color=discord.Colour.blue())
         embed.description = f"{rand}"
       
         await ctx.respond(embed=embed)       
@@ -296,7 +296,7 @@ class Miscellaneous(commands.Cog):
     @commands.slash_command(name="choose", description=f"{cmdsdescription['choose']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def choose(self, ctx, option1, option2):
-        embed = discord.Embed(title="random chooser", color=discord.Colour.red())  
+        embed = discord.Embed(title="random chooser", color=discord.Colour.blue())  
         list = [f"{option1}", f"{option2}"]     
         choice = random.choice(list)
 
@@ -308,7 +308,7 @@ class Miscellaneous(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def user(self, ctx, member: discord.Member = None):
         member = member or ctx.author
-        embed = discord.Embed(color=discord.Colour.red())
+        embed = discord.Embed(color=discord.Colour.blue())
       
         joinedserver = member.joined_at.strftime('%Y-%m-%d')
         embed.add_field(name="Joined server:", value=f"{joinedserver}", inline=True)    
@@ -324,7 +324,7 @@ class Miscellaneous(commands.Cog):
     @commands.slash_command(name="roles", description=f"{cmdsdescription['roles']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def roles(self, ctx):
-        embed = discord.Embed(color=discord.Colour.red(), title="Roles")
+        embed = discord.Embed(color=discord.Colour.blue(), title="Roles")
         result = ''
       
         for roles in ctx.guild.roles:
@@ -338,7 +338,7 @@ class Miscellaneous(commands.Cog):
     @commands.slash_command(name="guild", description=f"{cmdsdescription['guild']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def guild(self, ctx):
-        embed = discord.Embed(color=discord.Colour.red())
+        embed = discord.Embed(color=discord.Colour.blue())
         embed.set_author(name=f"{ctx.guild.name}", icon_url=f"{ctx.guild.icon.url}")
 
         guildId = ctx.guild.id
@@ -368,7 +368,7 @@ class Miscellaneous(commands.Cog):
     async def _user(self, ctx, user: discord.User = None):
         user = user or ctx.author
 
-        embed = discord.Embed(title="user avatar",color=discord.Colour.red())
+        embed = discord.Embed(title="user avatar",color=discord.Colour.blue())
         embed.description = f"this avatar belongs to {user.display_name}"
         embed.set_image(url=f"{user.avatar.url}")
 
@@ -380,7 +380,7 @@ class Miscellaneous(commands.Cog):
     async def _member(self, ctx, member: discord.Member = None):
         member = member or ctx.author
 
-        embed = discord.Embed(title="member avatar",color=discord.Colour.red())
+        embed = discord.Embed(title="member avatar",color=discord.Colour.blue())
         embed.description = f"this avatar belongs to {member.display_name}"
         embed.set_image(url=f"{member.display_avatar.url}")
 
@@ -390,7 +390,7 @@ class Miscellaneous(commands.Cog):
     @avatar.command(name="guild", description=f"{cmdsdescription['guildavatar']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def _guild(self, ctx):
-        embed = discord.Embed(title="guild avatar",color=discord.Colour.red())
+        embed = discord.Embed(title="guild avatar",color=discord.Colour.blue())
         embed.set_image(url=f"{ctx.guild.icon.url}")
 
         await ctx.respond(embed=embed)   
