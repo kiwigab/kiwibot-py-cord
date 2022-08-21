@@ -45,4 +45,4 @@ for f in os.listdir("./kiwibot/cogs"):
     bot.load_extension("cogs." + f[:-3])
 
 bot.add_application_command(extension)
-bot.run('OTk4MjA1MzY5ODcwNDUwNzA4.GhRle9.Vvsn-W8HQgPXQn8g8ys1_06F1Am8_MdYFjT0mo')
+bot.run('OTc5NDc4NzkxMDExMzM2MjYy.Gk3aOI.eoC98P0HBJaSsrcE0m0Ozw37WUf_HZSjhBHcqQ')
