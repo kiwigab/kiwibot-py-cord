@@ -3,7 +3,7 @@ import discord, random, json, ipapi, requests
 from discord import Option
 from datetime import datetime
 from discord.ext import commands
-from discord.commands import SlashCommandGroup 
+from discord.commands import SlashCommandGroup, option
 
 class Miscellaneous(commands.Cog):
     def __init__(self, bot):
@@ -15,135 +15,64 @@ class Miscellaneous(commands.Cog):
     with open("kiwibot/json/description.json", "r") as dfile:
       cmdsdescription = json.load(dfile)
           
-    avatar = SlashCommandGroup("avatar", "Commands related to avatars")
-    animals = SlashCommandGroup("animals", "Commands related to avatars")
-  
     @commands.Cog.listener()
     async def on_ready(self):
       print("cmds.miscellaneous loaded")
 
-
-    # ANIMALS COMMANDS #######################
-      
-    #DOG
-    @animals.command(name="dog", description=f"{cmdsdescription['dog']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def dog(self, ctx):
-        embed = discord.Embed(title="dog", color = discord.Colour.blue())
-      
-        req = requests.get("https://some-random-api.ml/img/dog")
-        data = req.json()
-
-        embed.set_image(url=data["link"])
-      
-        await ctx.respond(embed=embed)   
-
-    #CAT
-    @animals.command(name="cat", description=f"{cmdsdescription['cat']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def cat(self, ctx):
-        embed = discord.Embed(title="cat", color = discord.Colour.blue())
-      
-        req = requests.get("https://some-random-api.ml/img/cat")
-        data = req.json()
-
-        embed.set_image(url=data["link"])
-      
-        await ctx.respond(embed=embed)    
-
-    #FOX 
-    @animals.command(name="fox", description=f"{cmdsdescription['fox']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def fox(self, ctx):
-        embed = discord.Embed(title="fox", color = discord.Colour.blue())
-      
-        req = requests.get("https://some-random-api.ml/img/fox")
-        data = req.json()
-
-        embed.set_image(url=data["link"])
-      
-        await ctx.respond(embed=embed)    
-
-    #PANDA 
-    @animals.command(name="panda", description=f"{cmdsdescription['panda']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def panda(self, ctx):
-        embed = discord.Embed(title="panda", color = discord.Colour.blue())
-      
-        req = requests.get("https://some-random-api.ml/img/panda")
-        data = req.json()
-
-        embed.set_image(url=data["link"])
-      
-        await ctx.respond(embed=embed)    
-
-    #REDPANDA
-    @animals.command(name="redpanda", description=f"{cmdsdescription['redpanda']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def redpanda(self, ctx):
-        embed = discord.Embed(title="redpanda", color = discord.Colour.blue())
-      
-        req = requests.get("https://some-random-api.ml/img/redpanda")
-        data = req.json()
-
-        embed.set_image(url=data["link"])
-      
-        await ctx.respond(embed=embed)    
-
-    #KOALA
-    @animals.command(name="koala", description=f"{cmdsdescription['koala']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def koala(self, ctx):
-        embed = discord.Embed(title="koala", color = discord.Colour.blue())
-      
-        req = requests.get("https://some-random-api.ml/img/koala")
-        data = req.json()
-
-        embed.set_image(url=data["link"])
-      
-        await ctx.respond(embed=embed)    
-
-    #BIRD 
-    @animals.command(name="bird", description=f"{cmdsdescription['bird']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def bird(self, ctx):
-        embed = discord.Embed(title="koala", color = discord.Colour.blue())
-      
-        req = requests.get("https://some-random-api.ml/img/bird")
-        data = req.json()
-
-        embed.set_image(url=data["link"])
-      
-        await ctx.respond(embed=embed)    
-
-    #RACCOON
-    @animals.command(name="raccoon", description=f"{cmdsdescription['raccoon']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def raccoon(self, ctx):
-        embed = discord.Embed(title="koala", color = discord.Colour.blue())
-      
-        req = requests.get("https://some-random-api.ml/img/koala")
-        data = req.json()
-
-        embed.set_image(url=data["link"])
-      
-        await ctx.respond(embed=embed)    
-
-    #KANGAROO 
-    @animals.command(name="kangaroo", description=f"{cmdsdescription['kangaroo']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def kangaroo(self, ctx):
-        embed = discord.Embed(title="kangaroo", color = discord.Colour.blue())
-      
-        req = requests.get("https://some-random-api.ml/img/kangaroo")
-        data = req.json()
-
-        embed.set_image(url=data["link"])
-      
-        await ctx.respond(embed=embed)    
-
     # MISCELLANEOUS COMMANDS #######################
-    
+
+    #ANIMALS
+    @commands.slash_command(name="animals", description=f"{cmdsdescription['animals']}")
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    @option(
+      "type",
+      autocomplete=discord.utils.basic_autocomplete(["dog", "cat", "fox", "panda", "redpanda", "koala", "bird", "raccoon", "kangaroo"]),
+    )
+    async def animals(self, ctx, type : str):  
+        embed = discord.Embed(
+          title=f"{type}",
+          color=discord.Colour.blue())   
+
+        if type == "redpanda":
+          data = requests.get(f"https://some-random-api.ml/img/red_panda").json()
+
+        else:
+          data = requests.get(f"https://some-random-api.ml/img/{type}").json()
+        
+        embed.set_image(url=data["link"])        
+        await ctx.respond(embed=embed)
+
+    #AVATAR
+    @commands.slash_command(name="avatar", description=f"{cmdsdescription['avatar']}")
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    @option(
+      "type",
+      autocomplete=discord.utils.basic_autocomplete(["user_discord", "user_guild", "guild"]),
+    )
+    async def avatar(self, ctx, type : str, user : discord.Member = None):  
+        embed = discord.Embed(
+          title="user avatar",
+          description = f"this avatar belongs to {user.display_name}",
+          color=discord.Colour.blue()
+        )
+        if user and type != "guild":
+          if type == "user_discord":
+            embed.set_image(url=f"{user.avatar.url}")
+
+          if type == "user_guild":
+            embed.set_image(url=f"{user.display_avatar.url}")
+        
+        else:
+          embed.title = "Error"
+          embed.description = "Option 'user' is empty."
+        
+        if type == "guild":
+          embed.title = "guild avatar"
+          embed.description = " "
+          embed.set_image(url=f"{ctx.guild.icon.url}")
+
+        await ctx.respond(embed=embed)  
+
     #LOCATION
     @commands.slash_command(name="location", description=f"{cmdsdescription['geolocation']}")
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -249,8 +178,7 @@ class Miscellaneous(commands.Cog):
       
         embed.add_field(name="Creator", value="kiwigab#4827", inline=False)
         embed.add_field(name="Version", value="0.6.9", inline=False)
-        embed.add_field(name="Commands", value="Usage: /help <animals, fun, math, miscellaneous, moderation, nsfw>", inline=False)
-    
+
         await ctx.respond(embed=embed)  
   
     #DM
@@ -265,16 +193,11 @@ class Miscellaneous(commands.Cog):
       )
       
       try:
-        if len(word_list) < 100:
-          await member.send(message)
-  
-        else:
-          embed.title = "Error"
-          embed.description = "The message has too many words.."
+        await member.send(message)
 
       except:
-          embed.title = "Error"
-          embed.description = "This member has .."
+        embed.title = "Error"
+        embed.description = "Someting went wrong. Can't send a message to this member!"
       
     #SAY
     @commands.slash_command(name="say", description=f"{cmdsdescription['say']}")
@@ -297,10 +220,10 @@ class Miscellaneous(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def choose(self, ctx, option1, option2):
         embed = discord.Embed(title="random chooser", color=discord.Colour.blue())  
-        list = [f"{option1}", f"{option2}"]     
-        choice = random.choice(list)
+        choice = random.choice([f"{option1}", f"{option2}"] )
 
-        embed.description = f"{choice}"
+        embed.add_field(name="Options:", value=f"1: {option1}\n2: {option2}", inline=False)
+        embed.add_field(name="Chosen:", value=f"{choice}", inline=False)
         await ctx.respond(embed=embed)    
       
     #USER
@@ -342,58 +265,25 @@ class Miscellaneous(commands.Cog):
         embed.set_author(name=f"{ctx.guild.name}", icon_url=f"{ctx.guild.icon.url}")
 
         guildId = ctx.guild.id
-        embed.add_field(name="Guild ID:", value=f"{guildId}", inline=True)
+        embed.add_field(name="🆔Guild ID:", value=f"{guildId}", inline=True)
       
         createdAt = ctx.guild.created_at.strftime('%Y-%m-%d')
-        embed.add_field(name="Created at:", value=f"{createdAt}", inline=True)
+        embed.add_field(name="⏰Created at:", value=f"{createdAt}", inline=True)
 
         guildOwner = ctx.guild.owner.display_name
-        embed.add_field(name="Owned by:", value=f"{guildOwner}", inline=True)     
+        embed.add_field(name="👑Owned by:", value=f"{guildOwner}", inline=True)     
 
         guildMemberCount = ctx.guild.member_count
-        embed.add_field(name="Members:", value=f"{guildMemberCount}", inline=True)  
+        embed.add_field(name="😃Members:", value=f"{guildMemberCount}", inline=True)  
       
         textChannels = len(ctx.guild.text_channels)
         voiceChannels = len(ctx.guild.voice_channels)
-        embed.add_field(name="Channels:", value=f"{textChannels} Text / {voiceChannels} Voice", inline=True)        
+        embed.add_field(name="📺Channels:", value=f"{textChannels} Text / {voiceChannels} Voice", inline=True)        
 
         rolesNumber = len(ctx.guild.roles)
-        embed.add_field(name="Roles:", value=f"{rolesNumber}", inline=True)        
+        embed.add_field(name="👮Roles:", value=f"{rolesNumber}", inline=True)        
    
         await ctx.respond(embed=embed) 
-
-    #USER AVATAR 
-    @avatar.command(name="user", description=f"{cmdsdescription['useravatar']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def _user(self, ctx, user: discord.User = None):
-        user = user or ctx.author
-
-        embed = discord.Embed(title="user avatar",color=discord.Colour.blue())
-        embed.description = f"this avatar belongs to {user.display_name}"
-        embed.set_image(url=f"{user.avatar.url}")
-
-        await ctx.respond(embed=embed)  
-
-    #MEMBER AVATAR
-    @avatar.command(name="member", description=f"{cmdsdescription['memberavatar']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def _member(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-
-        embed = discord.Embed(title="member avatar",color=discord.Colour.blue())
-        embed.description = f"this avatar belongs to {member.display_name}"
-        embed.set_image(url=f"{member.display_avatar.url}")
-
-        await ctx.respond(embed=embed)  
-
-    #GUILD AVATAR
-    @avatar.command(name="guild", description=f"{cmdsdescription['guildavatar']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def _guild(self, ctx):
-        embed = discord.Embed(title="guild avatar",color=discord.Colour.blue())
-        embed.set_image(url=f"{ctx.guild.icon.url}")
-
-        await ctx.respond(embed=embed)   
       
 def setup(bot):
     bot.add_cog(Miscellaneous(bot))

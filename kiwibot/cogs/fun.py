@@ -1,326 +1,191 @@
-import discord, random, requests, asyncio, os, textwrap, json
+import discord, random, requests, asyncio, os, textwrap, json, unidecode
 
 from bs4 import BeautifulSoup
-from discord import Option
 from discord.ext import commands
-from discord.commands import SlashCommandGroup 
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from discord.commands import option
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops, ImageOps
 from io import BytesIO
-########################################
+
 class Fun(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
-      
+      self.bot = bot
+
     with open("kiwibot/json/description.json", "r") as dfile:
       cmdsdescription = json.load(dfile)
-      
-    rate = SlashCommandGroup("rate", "Commands related to rates")
-    text = SlashCommandGroup("text", "Commands related to text")
-    img = SlashCommandGroup("image", "Commands related to images")
       
     @commands.Cog.listener()
     async def on_ready(self):
       print("cmds.fun loaded")
-    # IMAGE COMMANDS #######################
 
-    #WASTED
-    @img.command(name="wasted", description=f"{cmdsdescription['wasted']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def wasted(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-        wasted = Image.open("kiwibot/images/wasted.png")
-        response = requests.get(member.display_avatar.url)
-        avatar = Image.open(BytesIO(response.content))
-        avatar = avatar.resize((256, 256))
-        avatar = avatar.convert('L')
-        canvas = Image.new("RGBA", (256, 256), (255, 255, 255, 0))
-        canvas.paste(avatar, (0, 0), avatar)
-        canvas.paste(wasted, (0, 0), wasted)
-      
+    # FUN COMMANDS #######################
+
+    #IMAGE
+    @commands.slash_command(name="image", description=f"{cmdsdescription['image']}")
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    @option(
+      "type",
+      autocomplete=discord.utils.basic_autocomplete(["delete", "jail", "invert", "fedora", "gravestone", "dreads", "facts", "gay", "pointing", "wide", "blur", "wasted", "simpcard", "slap", "wanted", "egg"]),
+    )
+    async def image(self, ctx, type : str, text : str = None, user1 : discord.Member = None, user2 : discord.Member = None):
+      def circle(pfp,size = (215,215)):       
+        pfp = pfp.resize(size, Image.ANTIALIAS).convert("RGBA")
         
-        wasted = wasted.convert("RGBA")
+        bigsize = (pfp.size[0] * 3, pfp.size[1] * 3)
+        mask = Image.new('L', bigsize, 0)
+        draw = ImageDraw.Draw(mask) 
+        draw.ellipse((0, 0) + bigsize, fill=255)
+        mask = mask.resize(pfp.size, Image.ANTIALIAS)
+        mask = ImageChops.darker(mask, pfp.split()[-1])
+        pfp.putalpha(mask)
+        return pfp
 
-        canvas.save(f'wasted{member.name}.png')
-     
-        file=discord.File(f'wasted{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"wasted{member.name}.png")
-      
-    #SIMPCARD
-    @img.command(name="simpcard", description=f"{cmdsdescription['simpcard']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def simpcard(self, ctx, member : discord.Member = None):
-        member = member or ctx.author
-      
-        simpcard = Image.open("kiwibot/images/simpcard.png")
-      
-        response = requests.get(member.display_avatar.url)
-      
-        avatar = Image.open(BytesIO(response.content))
-        avatar = avatar.resize((200, 240))
-      
-        simpcard.paste(avatar, (55, 110), avatar)
+      user = user1 or ctx.author
+      user1_avatar = Image.open(BytesIO(requests.get(user.display_avatar.url).content))
+      user2_avatar = Image.open(BytesIO(requests.get(user2.display_avatar.url).content)) if user2 else None
+      embed = discord.Embed(title="Error", description="Something went wrong. Please try again later!", color=discord.Colour.blue())
 
-        textimg = ImageDraw.Draw(simpcard)
+      if type == "delete":
+        imageDelete = Image.open("kiwibot/images/delete.png")
+        user1_avatar = user1_avatar.resize((85, 85))
+        imageDelete.paste(user1_avatar, (62 ,72), user1_avatar)
+        imageDelete.save(f'{type}{user.name}.png')
       
-        font = ImageFont.truetype("kiwibot/fonts/Roboto-Light.ttf", 34)
-        textimg.text((729/2, 420), f"{member.display_name}", font=font, anchor="mm", fill="#000")  
-      
-        simpcard.save(f'simpcard{member.name}.png')
-      
-        file=discord.File(f'simpcard{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"simpcard{member.name}.png")
+      if type == "dreads":
+        imageDreads = Image.open("kiwibot/images/dreads.png")
+        imageDreads = imageDreads.resize((378, 256))
+        user1_avatar = user1_avatar.resize((256, 256))
+        user1_avatar.paste(imageDreads, (-65, -35), imageDreads)
+        user1_avatar.save(f'{type}{user.name}.png')
 
-      
-    #GAY
-    @img.command(name="gay", description=f"{cmdsdescription['gay']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def gay(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-      
-        gay = Image.open("kiwibot/images/gay.png")
-        gay =  gay.convert('RGB')
-        gay.putalpha(140)
-        gay = gay.resize((256, 256))
-      
-        response = requests.get(member.display_avatar.url)
-      
-        avatar = Image.open(BytesIO(response.content))
-        avatar = avatar.resize((256, 256))
-      
-        avatar.paste(gay, (0, 0), gay)
-        avatar.save(f'gay{member.name}.png')
-      
-        file=discord.File(f'gay{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"gay{member.name}.png")
-      
-    #POINTING
-    @img.command(name="pointing", description=f"{cmdsdescription['pointing']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def pointing(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-      
-        pointing = Image.open("kiwibot/images/pointing.png")
-        pointing = pointing.resize((935, 698))
-        pointing =  pointing.convert('RGB')
-        response = requests.get(member.display_avatar.url)
-      
-        avatar = Image.open(BytesIO(response.content))
-        avatar = avatar.resize((210, 210))
-      
-        pointing.paste(avatar, (300, 80), avatar)
-        pointing.save(f'pointing{member.name}.png')
-      
-        file=discord.File(f'pointing{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"pointing{member.name}.png")
-      
-    #DREADS
-    @img.command(name="dreads", description=f"{cmdsdescription['dreads']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def dreads(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-      
-        dreads = Image.open("kiwibot/images/dreads.png")
-        dreads = dreads.resize((378, 256))
-        response = requests.get(member.display_avatar.url)
-      
-        avatar = Image.open(BytesIO(response.content))
-        avatar = avatar.resize((256, 256))
-      
-        avatar.paste(dreads, (-65, -35), dreads)
-        avatar.save(f'dreads{member.name}.png')
-      
-        file=discord.File(f'dreads{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"dreads{member.name}.png")
+      if type == "facts":
+        if text != None:
+          imageFacts = Image.open("kiwibot/images/facts.jpg")
+          textOnImage = ImageDraw.Draw(imageFacts)
+          font = ImageFont.truetype("kiwibot/fonts/Roboto-Light.ttf", 20)
+          textWarp = textwrap.fill(unidecode.unidecode(text), 25)
+          textOnImage.text((35, 640), f"{textWarp}", fill=(0, 0, 0), font=font)  
+          imageFacts.save(f'{type}{user.name}.png')
 
-    #WIDE
-    @img.command(name="wide", description=f"{cmdsdescription['wide']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def wide(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-        response = requests.get(member.display_avatar.url)     
-      
-        wide = Image.open(BytesIO(response.content))
-        wide = wide.resize((1012, 128))   
-        wide.save(f'wide{member.name}.png')
+        else:
+          embed.description = "The option 'text' is empty."
+
+      if type == "gay":
+        imageGay = Image.open("kiwibot/images/gay.png").convert('RGB')
+        imageGay = imageGay.resize((256, 256))
+        imageGay.putalpha(140)
+
+        user1_avatar = user1_avatar.resize((256, 256))
+        user1_avatar.paste(imageGay, (0, 0), imageGay)
+        user1_avatar.save(f'{type}{user.name}.png')     
+
+      if type == "pointing":
+        imagePointing = Image.open("kiwibot/images/pointing.png").convert('RGB')
+        imagePointing = imagePointing.resize((935, 698))
+        user1_avatar = user1_avatar.resize((210, 210))
+        imagePointing.paste(user1_avatar, (300, 80), user1_avatar)
+        imagePointing.save(f'{type}{user.name}.png')
+
+      if type == "wide":
+        user1_avatar = user1_avatar.resize((512, 128))   
+        user1_avatar.save(f'{type}{user.name}.png')
+
+      if type == "blur":
+        user1_avatar = user1_avatar.resize((256, 256))
+        user1_avatar = user1_avatar.filter(ImageFilter.BoxBlur(5))
+        user1_avatar.save(f'{type}{user.name}.png')
         
-        file=discord.File(f'wide{member.name}.png')
+      if type == "wasted":
+        imageWasted = Image.open("kiwibot/images/wasted.png").convert("RGBA")
+        user1_avatar = user1_avatar.resize((256, 256))
+        user1_avatar = user1_avatar.convert('L')
+        wastedCanvas = Image.new("RGBA", (256, 256), (255, 255, 255, 0))
+        wastedCanvas.paste(user1_avatar, (0, 0), user1_avatar)
+        wastedCanvas.paste(imageWasted, (0, 0), imageWasted)
+        wastedCanvas.save(f'{type}{user.name}.png')
+
+      if type == "simpcard":
+        imageSimpcard = Image.open("kiwibot/images/simpcard.png")
+        user1_avatar = user1_avatar.resize((200, 240))
+        imageSimpcard.paste(user1_avatar, (55, 110), user1_avatar)
+        textOnImage = ImageDraw.Draw(imageSimpcard)
+        font = ImageFont.truetype("kiwibot/fonts/Roboto-Light.ttf", 33)
+        textOnImage.text((729/2, 420), f"{user.display_name}", font=font, anchor="mm", fill="#000")  
+        imageSimpcard.save(f'{type}{user.name}.png')
+
+      if type == "slap":
+        if user2 != None:
+          imageSlap = Image.open("kiwibot/images/slap.jpg")
+          user1_avatar = user1_avatar.resize((76, 75))
+          user2_avatar = user2_avatar.resize((76, 75))
+          imageSlap.paste(user1_avatar, (230, 30), user1_avatar)
+          imageSlap.paste(user2_avatar, (90, 20), user2_avatar)
+          imageSlap.save(f'{type}{user.name}.png')
+
+        else:
+          embed.description = "The option 'user2' is empty."
       
+      if type == "wanted":
+        imageWanted = Image.open("kiwibot/images/wanted.jpg")
+        user1_avatar = user1_avatar.resize((334, 329))
+        imageWanted.paste(user1_avatar, (200, 285), user1_avatar)
+        imageWanted.save(f'{type}{user.name}.png')
+
+      if type == "jail":
+        imageJail = Image.open("kiwibot/images/jail.png").convert("RGBA")
+        imageJail = imageJail.resize((128, 128))
+        user1_avatar = user1_avatar.resize((128, 128))
+        user1_avatar.paste(imageJail, (0, 0), imageJail)
+        user1_avatar.save(f'{type}{user.name}.png')    
+
+      if type == "egg":
+        imageEgg = Image.open("kiwibot/images/egg.jpg").convert("RGBA")
+        user1_avatar = user1_avatar.resize((40, 40))
+        user1_avatar = circle(user1_avatar, (40, 40))
+        imageEgg.paste(user1_avatar, (43, 227), user1_avatar)
+        imageEgg.save(f'{type}{user.name}.png')   
+
+      if type == "gravestone":
+        imageGravestone = Image.open("kiwibot/images/gravestone.png").convert("RGBA")
+        user1_avatar = user1_avatar.resize((60, 60))
+        imageGravestone.paste(user1_avatar, (60, 40), user1_avatar)
+        imageGravestone.save(f'{type}{user.name}.png')          
+
+      if type == "fedora":
+        fedoraCanvas = Image.new("RGBA", (463, 441), (255, 255, 255, 0))
+        imageFedora = Image.open("kiwibot/images/fedora.png").convert("RGBA")
+        user1_avatar = user1_avatar.resize((253, 248))
+        user1_avatar = circle(user1_avatar, (253, 248))
+        fedoraCanvas.paste(user1_avatar, (125, 80), user1_avatar)
+        fedoraCanvas.paste(imageFedora, (0, 0), imageFedora)
+        fedoraCanvas.save(f'{type}{user.name}.png')     
+
+      if type == "invert":
+        user1_avatar = user1_avatar.resize((256, 256))
+        user1_avatar = user1_avatar.convert('RGB')
+        user1_avatar = ImageOps.invert(user1_avatar)
+        user1_avatar.save(f'{type}{user.name}.png')             
+
+      try:
+        file=discord.File(f'{type}{user.name}.png')
         await ctx.respond(file=file)
         await asyncio.sleep(1)
+        os.remove(f"{type}{user.name}.png")
 
-        os.remove(f"wide{member.name}.png")
-    #ADULT CONTENT
-    @img.command(name="adultcontent", description=f"{cmdsdescription['adultcontent']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def adultcontent(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-      
-        adult18 = Image.open("kiwibot/images/18.png")
-      
-        response = requests.get(member.display_avatar.url)     
-        adultcontent = Image.open(BytesIO(response.content))
-        adultcontent = adultcontent.resize((256, 256))
-        adult18 = adult18.resize((156, 156))
-        adultcontent = adultcontent.filter(ImageFilter.BoxBlur(20))
-        adultcontent.paste(adult18, (50 ,50), adult18)
-      
-        adultcontent.save(f'adultcontent{member.name}.png')
-        
-        file=discord.File(f'adultcontent{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"adultcontent{member.name}.png")
+      except:
+        await ctx.respond(embed=embed)
 
-    #BLUR
-    @img.command(name="blur", description=f"{cmdsdescription['blur']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def blur(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-      
-        response = requests.get(member.display_avatar.url)     
-        blur = Image.open(BytesIO(response.content))
-        blur = blur.resize((256, 256))
-        blur = blur.filter(ImageFilter.BoxBlur(5))
-      
-        blur.save(f'blur{member.name}.png')
-      
-        file=discord.File(f'blur{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"blur{member.name}.png")
+    
+    #TEXT
+    @commands.slash_command(name="text", description=f"{cmdsdescription['text']}")
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    @option(
+      "type",
+      autocomplete=discord.utils.basic_autocomplete(["emojify", "spoiler", "trumpet", "skull", "clap", "lowercase", "uppercase"]),
+    )
+    async def text(self, ctx, type : str, text : str):
+      result = ""
 
-    #FACTS
-    @img.command(name="facts", description=f"{cmdsdescription['facts']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def facts(self, ctx, text):
-        member = ctx.author
-      
-        facts = Image.open("kiwibot/images/facts.jpg")
-        textimg = ImageDraw.Draw(facts)
-      
-        font = ImageFont.truetype("kiwibot/fonts/kindergarten.ttf", 25)
-        textimg.text((35, 640), f"{textwrap.fill( text, 25 )}", fill=(0, 0, 0), font=font)  
-      
-        facts.save(f'facts{member.name}.png')
-      
-        file=discord.File(f'facts{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"facts{member.name}.png")
-
-    #DELETE
-    @img.command(name="delete", description=f"{cmdsdescription['delete']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def delete(self, ctx, member : discord.Member):
-        member = member or ctx.author
-      
-        deletethis = Image.open("kiwibot/images/deletethis.png")
-        response = requests.get(member.display_avatar.url)
-      
-        img = Image.open(BytesIO(response.content))
-        img = img.resize((85, 85))
-      
-        deletethis.paste(img, (62 ,72), img)
-        deletethis.save(f'delete{member.name}.png')
-      
-        file=discord.File(f'delete{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"delete{member.name}.png")
-
-    #STRAWBERRIES
-    @img.command(name="strawberries", description=f"{cmdsdescription['strawberries']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def strawberries(self, ctx, member : discord.Member):
-        member = member or ctx.author
-      
-        strawberries = Image.open("kiwibot/images/strawberries.jpg")
-        response = requests.get(member.display_avatar.url)
-      
-        img = Image.open(BytesIO(response.content))
-        img = img.resize((250, 245))
-      
-        strawberries.paste(img, (200, 80), img)
-        strawberries.save(f'strawberries{member.name}.png')
-      
-        file=discord.File(f'strawberries{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"strawberries{member.name}.png")
-      
-    #SLAP
-    @img.command(name="slap", description=f"{cmdsdescription['slap']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def slap(self, ctx, member : discord.Member):
-        slapimg = Image.open("kiwibot/images/slap.jpg")
-        rresponse = requests.get(ctx.author.display_avatar.url)
-        dresponse = requests.get(member.display_avatar.url)
-
-        pfpr = Image.open(BytesIO(rresponse.content))
-        pfpr = pfpr.resize((76, 75))
-      
-        pfpd = Image.open(BytesIO(dresponse.content))
-        pfpd = pfpd.resize((76, 75))
-      
-        slapimg.paste(pfpr, (230, 30), pfpr)
-        slapimg.paste(pfpd, (90, 20), pfpd)
-      
-        slapimg.save(f'slap{member.name}.png')
-      
-        file=discord.File(f'slap{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"slap{member.name}.png")
-      
-    #WANTED      
-    @img.command(name="wanted", description=f"{cmdsdescription['wanted']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def wanted(self, ctx, member : discord.Member = None):
-        member = member or ctx.author
-      
-        poster = Image.open("kiwibot/images/poster.jpg")
-        response = requests.get(member.display_avatar.url)
-      
-        img = Image.open(BytesIO(response.content))
-        img = img.resize((334, 329))
-      
-        poster.paste(img, (200, 285), img)
-        poster.save(f'wanted{member.name}.png')
-      
-        file=discord.File(f'wanted{member.name}.png')
-      
-        await ctx.respond(file=file)
-        await asyncio.sleep(1)
-        os.remove(f"wanted{member.name}.png")
-
-      
-    # TEXT COMMANDS #######################
-
-    #EMOJIFY
-    @text.command(name="emojify", description=f"{cmdsdescription['emojify']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def emojify(self, ctx, text):
+      if type == "emojify":
         emojis = []
         for s in text.lower():
           if s.isdecimal():
@@ -342,199 +207,108 @@ class Fun(commands.Cog):
 
           else:
             emojis.append(s)
-            
-        await ctx.respond(''.join(emojis)) 
 
-    #SPOILER 
-    @text.command(name="spoiler", description=f"{cmdsdescription['spoiler']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def spoiler(self, ctx, text): 
-        result = ''    
+          result = "".join(emojis)
+
+      if type == "spoiler":
         for character in text:
           if character != " ":
-            result += "||  " + character + "  ||"
-                  
-        await ctx.respond(result) 
-      
-    #TRUMPET 
-    @text.command(name="trumpet", description=f"{cmdsdescription['trumpet']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def trumpet(self, ctx, text):
+            result += "||  " + character + "  ||" 
+
+      if type == "trumpet":
         separator = "🎺"
-        result = ''
         for character in text:
           if character != " ":
             result = result + separator + character
             
-        result += separator    
-        await ctx.respond(result) 
+        result += separator       
 
-    #CAPITALIZE 
-    @text.command(name="capitalize", description=f"{cmdsdescription['capitalize']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def capitalize(self, ctx, text):
-        separator = " "
-        result = ''
-        for character in text:
-          if character != " ":
-            result = result + separator + character.capitalize()
-            
-        result += separator    
-        await ctx.respond("**" + result + "**") 
-      
-    #SKULL 
-    @text.command(name="skull", description=f"{cmdsdescription['skull']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def skull(self, ctx, text):
+      if type == "skull":
         separator = "💀"
-        result = ''
         for character in text:
           if character != " ":
             result = result + separator + character
             
-        result += separator    
-        await ctx.respond(result) 
-      
-    #CLAP 
-    @text.command(name="clap", description=f"{cmdsdescription['clap']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def clap(self, ctx, text):
+        result += separator       
+
+      if type == "clap":
         separator = "👏"
-        result = ''
         for character in text:
           if character != " ":
             result = result + separator + character
             
-        result += separator    
-        await ctx.respond(result) 
+        result += separator  
 
-    # RATE COMMANDS #######################
-     
-    #EPIC GAMER
-    @rate.command(name="epicgamer", description=f"{cmdsdescription['epicgamerrate']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def epicgamerrate(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
+      if type == "lowercase":
+        result = text.lower()   
+
+      if type == "uppercase":
+        result = text.upper()             
+
+      await ctx.respond(result)
+
+    #RATE
+    @commands.slash_command(name="rate", description=f"{cmdsdescription['rate']}")
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    @option(
+      "type",
+      autocomplete=discord.utils.basic_autocomplete(["epicgamer", "thot", "gay", "simp", "stank", "retarded", "cool"]),
+    )
+    async def rate(self, ctx, type : str, user : discord.Member):  
+        user = user or ctx.author
         rand = random.randint(0, 100)
 
         embed = discord.Embed(
-          title="epic gamer rate machine never lies",
-           color=discord.Colour.blue()
-        )
-        
-        if rand >= 30:
-          embed.description = f"{member.display_name} este {rand}% gamer"
-
-        if rand < 30:
-          embed.description = f"{member.display_name} este {rand}% gamer"
-          
-        await ctx.respond(embed=embed) 
-      
-    #THOT
-    @rate.command(name="thot", description=f"{cmdsdescription['thotrate']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def thotrate(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-        rand = random.randint(0, 100)
-
-        embed = discord.Embed(
-          title="thot rate machine never lies",
-           color=discord.Colour.blue()
-        )
-        
-        if rand >= 30:
-          embed.description = f"{member.display_name} este {rand}% thotty"
-
-        if rand < 30:
-          embed.description = f"{member.display_name} este {rand}% thotty"
-          
-        await ctx.respond(embed=embed) 
-      
-    #GAY
-    @rate.command(name="gay", description=f"{cmdsdescription['gayrate']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def gayrate(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-        rand = random.randint(0, 100)
-
-        embed = discord.Embed(
-          title="gay rate machine never lies",
-          color=discord.Colour.blue()          
-        )
-        
-        if rand >= 30:
-          embed.description = f"{member.display_name} este {rand}% gay🏳️‍🌈"
-
-        else:
-          embed.description = f"{member.display_name} este {rand}% gay📏"
-          
-        await ctx.respond(embed=embed) 
-      
-    #SIMP
-    @rate.command(name="simp", description=f"{cmdsdescription['simprate']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def simprate(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-        rand = random.randint(1, 30)
-
-        embed = discord.Embed(
-          title="simp rate machine never lies",
+          title="rate machine never lies",
           color=discord.Colour.blue()
-        )
+        )   
         
-        if rand >= 30:
-          embed.description = f"{member.display_name} este {rand}% simp.. Sunt dezamagit de el"
+        if type == "epicgamer":
+          embed.title = "epic gamer rate machine never lies"
+          embed.description = f"{user.display_name}, you are {rand}% epic gamer"
+
+        if type == "thot":
+          embed.title = "thot rate machine never lies"
+          embed.description = f"{user.display_name}, you are {rand}% thotty"
+
+        if type == "gay":
+          embed.title = "gay rate machine never lies"
+          if rand > 30:
+            embed.description = f"{user.display_name}, you are {rand}% gay🏳️‍🌈"
+
+          else:
+            embed.description = f"{user.display_name}, you are {rand}% gay📏"
+
+        if type == "simp":
+          embed.title = "simp rate machine never lies"
+          if rand > 30:
+            embed.description = f"{user.display_name}, you are {rand}% simp.. You should be ashamed!"
+
+          else:
+            embed.description = f"{user.display_name}, you are {rand}% simp.. Very nice solider!"    
+
+        if type == "stank":
+          embed.title = "stank rate machine never lies"
+          if rand > 15:
+            embed.description = f"{user.display_name}, you are {rand}% stanky.. Wash your reproductive organ well you bastard!"
+
+          else:
+            embed.description = f"{user.display_name}, you are {rand}% stanky.. I'm amazed! You are washing your ass?"          
+
+        if type == "retarded":
+          embed.title = "retarded machine never lies"
+          embed.description = f"{user.display_name}, you are {rand}% retarded"
+
+        if type == "cool":
+          embed.title = "cool machine never lies"
+          embed.description = f"{user.display_name}, you are {rand}% cool"
           
-        else:
-          embed.description = f"{member.display_name} este {rand}% simp.. Foarte bine soldat"
+        await ctx.respond(embed=embed)
 
-        await ctx.respond(embed=embed) 
-      
-    #STANK
-    @rate.command(name="stank", description=f"{cmdsdescription['stankrate']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def stankrate(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-        rand = random.randint(1, 30)
-
-        embed = discord.Embed(
-          title="stank rate machine never lies",
-          color=discord.Colour.blue()
-        )
-        
-        if rand >= 30:
-          embed.description = f"{member.display_name} este {rand}% stanky.. Spala-te bine la organul genital masculin de reproducere jegosule."
-          
-        else:
-          embed.description = f"{member.display_name} este {rand}% stanky.. TE SPELI?"
-
-        await ctx.respond(embed=embed) 
-      
-    #TERMINAT
-    @rate.command(guild_ids=[1006631290012975218], name="terminat", description=f"{cmdsdescription['terminatrate']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def termiantrate(self, ctx, member: discord.Member = None):
-        member = member or ctx.author
-        rand = random.randint(0, 100)
-
-        embed = discord.Embed(
-          title="termiant rate machine never lies",
-          color=discord.Colour.blue()
-        )
-        
-        if rand >= 30:
-          embed.description = f"{member.display_name} este {rand}% terminat.. Sunt mandru de el"
-
-        else:
-          embed.description = f"{member.display_name} este {rand}% terminat.. Un ratat"
-          
-        await ctx.respond(embed=embed) 
-
-    # FUN COMMANDS #######################
       
     #STAPINESCU
     @commands.slash_command(name="dadjoke", description=f"{cmdsdescription['dadjoke']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def dadjoke(self, ctx):
         embed = discord.Embed(
           title="just a dad joke",
@@ -551,7 +325,7 @@ class Fun(commands.Cog):
       
     #STAPINESCU
     @commands.slash_command(name="stapinescu", description=f"{cmdsdescription['stapinescu']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def stapinescu(self, ctx):
         embed = discord.Embed(
           title="cuvinte celebre spuse de stapinu",
@@ -570,7 +344,7 @@ class Fun(commands.Cog):
   
     #ROAST 
     @commands.slash_command(name="roast", description=f"{cmdsdescription['roast']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def roast(self, ctx, member : discord.Member = None):
         member = member or ctx.author
         embed = discord.Embed(
@@ -588,7 +362,7 @@ class Fun(commands.Cog):
 
     #MEME
     @commands.slash_command(name="meme", description=f"{cmdsdescription['meme']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def meme(self, ctx):
         embed = discord.Embed(
           title="meme",
@@ -604,7 +378,7 @@ class Fun(commands.Cog):
       
     #8BALL 
     @commands.slash_command(name="8ball", description=f"{cmdsdescription['8ball']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def _8ball(self, ctx, question):
         embed = discord.Embed(
           title="8ball",
@@ -630,7 +404,7 @@ class Fun(commands.Cog):
 
     #HACK
     @commands.slash_command(name="hack", description=f"{cmdsdescription['hack']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def hack(self, ctx, member : discord.Member):
         member = member or ctx.author
 
@@ -665,7 +439,7 @@ class Fun(commands.Cog):
     
     #PUSSY 
     @commands.slash_command(name="pussy", description=f"{cmdsdescription['pussy']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def pussy(self, ctx, member: discord.Member = None):
         member = member or ctx.author
         
@@ -673,7 +447,7 @@ class Fun(commands.Cog):
       
         embed = discord.Embed(
           title="pussy machine never lies",
-          description=f"organul genital feminin de reproducere al lui {member.name} arata asa: \n{choice}",
+          description=f"{member.name}'s pussy looks like this: \n{choice}",
           color=discord.Colour.blue()
         )
 
@@ -681,7 +455,7 @@ class Fun(commands.Cog):
       
     #PENIS
     @commands.slash_command(name="penis", description=f"{cmdsdescription['penis']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def penis(self, ctx, member: discord.Member = None):
         member = member or ctx.author
         rand = random.randint(1, 30)

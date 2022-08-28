@@ -1,42 +1,11 @@
 {
   "image" : "image",
-  
-  "wasted" : "soon",
-  "simpcard" : "soon",
-  "youtube" : "soon",
-  "wasted" : "soon",
-  "gay" : "soon",
-  "pointing" : "soon",
-  "dreads" : "soon",
-  "wide" : "soon",
-  "adultcontent" : "soon",
-  "blur" : "soon",
-  "facts" : "soon",
-  "delete" : "soon",
-  "strawberries" : "soon",
-  "slap" : "soon",
-  "wanted" : "soon",
-
   "text" : "text",
-  
-  "emojify" : "soon",
-  "spoiler" : "soon",
-  "trumpet" : "soon",
-  "capitalize" : "soon",
-  "skull" : "soon",
-  "clap" : "soon",
-
   "rate" : "rate",
-  
-  "epicgamerrate" : "soon",
-  "thotrate" : "soon",
-  "gayrate" : "soon",
-  "simprate" : "soon",
-  "stankrate" : "soon",
-  "terminatrate" : "soon",  
-
-  "fun" : "fun",
-  
+  "nsfw" : "nsfw",
+  "avatar" : "avatar",
+  "animals" : "animals",
+  "setup" : "setup",
   "dadjoke" : "soon",
   "stapinescu" : "soon",
   "roast" : "soon",
@@ -45,31 +14,7 @@
   "8ball" : "soon",
   "pussy" : "soon",
   "penis" : "soon",
-
-  "animals" : "animals",
-  
-  "dog" : "soon",
-  "cat" : "soon",
-  "fox" : "soon",
-  "panda" : "soon",
-  "redpanda" : "soon",
-  "koala" : "soon",
-  "bird" : "soon",
-  "raccoon" : "soon",
-  "kangaroo" : "soon",
-
-  "math" : "math",
-    
-  "sqrt" : "soon",
-  "power" : "soon",
-  "sin" : "soon",
-  "cos" : "soon",
-  "calculator" : "soon",
-  "arithmeticmean" : "soon",
-  "geometricmean" : "soon",
-
   "miscellaneous" : "soon",
-  
   "geolocation" : "soon",
   "ping" : "soon",
   "embed" : "soon",
@@ -85,9 +30,7 @@
   "useravatar" : "soon",  
   "memberavatar" : "soon",  
   "guildavatar" : "soon",  
-
   "moderation" : "moderation",
-  
   "multiplerole" : "soon", 
   "removerole" : "soon", 
   "giverole" : "soon", 
@@ -101,21 +44,5 @@
   "slowmode" : "soon", 
   "ban" : "soon", 
   "unban" : "soon", 
-  "kick" : "soon",
-
-  "setup" : "setup",
-  
-  "defaultrolesetup" : "soon",
-  "goodbyesetup" : "soon",
-  "welcomesetup" : "soon", 
-
-  "nsfw" : "nsfw",
-  
-  "testnsfw" : "soon",
-  "nsfwpussy" : "soon",
-  "nsfwass" : "soon",
-  "nsfwanal" : "soon",
-  "nsfwasian" : "soon",
-  "nsfwboobs" : "soon",
-  "nsfwblowjob" : "soon"
+  "kick" : "soon"
 }

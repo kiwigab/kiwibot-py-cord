@@ -30,7 +30,7 @@ class Moderation(commands.Cog):
       "type",
       autocomplete=discord.utils.basic_autocomplete(["Give", "Remove"]),
     )
-    async def multiplerole(self, ctx, member: discord.Member, role: discord.Role, filter : str, type : str):
+    async def multiplerole(self, ctx, role: discord.Role, filter : str, type : str):
                        
       embed = discord.Embed(title="Multiple Role", color=discord.Colour.blue())  
     
@@ -295,10 +295,9 @@ class Moderation(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def clear(self, ctx, 
                     amount : Option(int, min_value=0, max_value=500, required = True), 
-                    member:  Option(discord.Member, required = False)
-                                    
+                    member:  Option(discord.Member, required = False)                 
                     ):
-      embed = discord.Embed(title="Clear", color=discord.Colour.blue(), description=f"Cleared {amount} messages sent by {member.name}.." if member else f"Cleared {amount} messages..")  
+      embed = discord.Embed(title="Clear", color=discord.Colour.blue(), description=f"Cleared {amount} messages sent by {member.name}.." if member else f"I just cleared {amount} messages..")  
       def check(m):
         return m.author.id == member.id
         
