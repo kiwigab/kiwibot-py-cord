@@ -1,7 +1,6 @@
 import discord, random, json, ipapi, requests
 
 from discord import Option
-from datetime import datetime
 from discord.ext import commands
 from discord.commands import SlashCommandGroup, option
 

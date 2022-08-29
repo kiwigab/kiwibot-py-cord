@@ -71,43 +71,27 @@ class Moderation(commands.Cog):
         
       await ctx.respond(embed=embed)
       
-    #REMOVE ROLE   
-    @role.command(name="remove", description=f"{cmdsdescription['removerole']}")
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def removerole(self, ctx, member: discord.Member, role: discord.Role):
-                       
-      embed = discord.Embed(title="Remove Role", color=discord.Colour.blue(), description=f"❌Changed roles for {member.name}. Removed '{role.name}'!")  
-    
-      if ctx.author.guild_permissions.manage_roles: 
-        try:
-          if ctx.author.top_role > member.top_role:
-            await member.remove_roles(role)
-            
-          else:
-            embed.title = "Error"
-            embed.description = f"{member.display_name} has a higher role in the hierarchy than you.."
-              
-        except:
-          embed.title = "Error"
-          embed.description = f"Something went wrong! {member.display_name} has a higher role in the hierarchy than me.."
-
-      else:
-        embed.title = "Error"
-        embed.description = "You can't use this command. Missing permission 'Manage Roles'"
-        
-      await ctx.respond(embed=embed)
-      
     #GIVE ROLE   
-    @role.command(name="give", description=f"{cmdsdescription['giverole']}")
+    @role.command(name="edit", description=f"{cmdsdescription['giverole']}")
+    @option(
+      "type",
+      autocomplete=discord.utils.basic_autocomplete(["Give", "Remove"]),
+    )
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def giverole(self, ctx, member: discord.Member, role: discord.Role):
+    async def giverole(self, ctx, type: str, member: discord.Member, role: discord.Role):
                        
-      embed = discord.Embed(title="Give Role", color=discord.Colour.blue(), description=f"✅Changed roles for {member.name}. Added '{role.name}'!")  
+      embed = discord.Embed(title="Role", color=discord.Colour.blue(), description=f"✅Changed roles for {member.name}. Added '{role.name}'!")  
     
       if ctx.author.guild_permissions.manage_roles: 
         try:
           if ctx.author.top_role > role:
-            await member.add_roles(role)
+            if type == "Give":
+              await member.add_roles(role)
+              embed.description=f"✅Changed roles for {member.name}. Added '{role.name}'!"
+
+            if type == "Remove":
+              await member.remove_roles(role)
+              embed.description=f"❌Changed roles for {member.name}. Removed '{role.name}'!"
             
           else:
             embed.title = "Error"
