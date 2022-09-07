@@ -50,4 +50,4 @@ for f in os.listdir("./kiwibot/cogs"):
 
 bot.loop.run_until_complete(create_db_pool())
 bot.add_application_command(extension)
-bot.run('OTc5NDc4NzkxMDExMzM2MjYy.GNELus.QqxJFOG8ukRsnvdBiw8fAx69PyZRX5WyebrQl8')
+bot.run('')
